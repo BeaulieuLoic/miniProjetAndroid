@@ -5,7 +5,7 @@
     tools:context="${packageName}.${activityClass}">
 
 	<Spinner
-	    android:id="@+id/spinner1"
+	    android:id="@+id/nbrRecherche"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentLeft="true"
@@ -36,9 +36,6 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_below="@+id/zoneSaisie"
 	    android:layout_marginTop="41dp"
-	    android:ems="10" >
-
-	    <requestFocus />
-	</EditText>
+	    android:ems="10" />
 
 </RelativeLayout>
