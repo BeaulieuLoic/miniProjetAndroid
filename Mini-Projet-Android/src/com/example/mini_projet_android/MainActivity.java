@@ -64,10 +64,13 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		if(arg0.equals(rechercher)){
 			String saisie = zoneSaisie.getText().toString();
 			saisie.replace("\\s", "%");
-			String url = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="+saisie;
+			String url = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=" +
+					Integer.parseInt(nbrRecherche.getSelectedItem().toString()) +
+						"&q="+saisie;
+			
+			System.out.println(url);
 			
 			lancerGet(url);
-
 		}		
 	}
 	
@@ -83,8 +86,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 			}
 
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				String jsonData = new String(arg2);
+			public void onSuccess(int arg0, Header[] arg1, byte[] data) {
+				String jsonData = new String(data);
 				
 				
 				try {
@@ -92,15 +95,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 					repObj = repObj.getJSONObject("responseData");
 					JSONArray tmp = repObj.getJSONArray("results");
 	
-					listeUrl = new ArrayList<>();
-					
-					int nbr = Integer.parseInt(nbrRecherche.getSelectedItem().toString());
-					
-					if(nbr > tmp.length()){
-						nbr = tmp.length();
-					}
-							
-					for (int i = 0; i < nbr; i++) {
+					listeUrl = new ArrayList<>();							
+					for (int i = 0; i < tmp.length(); i++) {
 						repObj = (JSONObject) tmp.get(i);
 						listeUrl.add(repObj.getString("url"));
 					}
@@ -118,13 +114,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view, int numListe, long arg3) {
-		Toast.makeText(this, arg0.getItemAtPosition(numListe).toString(), Toast.LENGTH_LONG).show();
-		
 		Intent intent = new Intent(this, ShowImageActivity.class);
 		intent.putExtra(Data.urlImage,listeUrl.get(numListe));
-		startActivity(intent);
-		
-		
-		
+		startActivity(intent);		
 	}
 }
