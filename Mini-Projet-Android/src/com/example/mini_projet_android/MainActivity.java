@@ -43,7 +43,6 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		
 		zoneSaisie = (EditText)findViewById(R.id.zoneSaisie);
 		
 		rechercher = (Button)findViewById(R.id.rechercher);
@@ -53,9 +52,6 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 		
 		listeTexte = (ListView)findViewById(R.id.listeView);
 		listeTexte.setOnItemClickListener(this);
-		
-		
-		
 	}
 
 
@@ -82,28 +78,26 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
 					Throwable arg3) {
 				Log.e("erreur json",arg3.getMessage());
-				
 			}
 
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, byte[] data) {
 				String jsonData = new String(data);
-				
-				
+							
 				try {
 					JSONObject repObj = (JSONObject) new JSONTokener(jsonData).nextValue();
 					repObj = repObj.getJSONObject("responseData");
 					JSONArray tmp = repObj.getJSONArray("results");
 	
-					listeUrl = new ArrayList<>();							
+					listeUrl = new ArrayList<String>();							
 					for (int i = 0; i < tmp.length(); i++) {
 						repObj = (JSONObject) tmp.get(i);
 						listeUrl.add(repObj.getString("url"));
 					}
-
+										
+					MonAdaptateurDeListe adaptateur = new MonAdaptateurDeListe(act, listeUrl);
+					listeTexte.setAdapter(adaptateur);
 					
-					itemsAdapter = new ArrayAdapter<String>(act, android.R.layout.simple_list_item_1, listeUrl);
-					listeTexte.setAdapter(itemsAdapter);
 				} catch (JSONException je) {
 					Log.e("TAG", "ERREUR:"+je.getMessage());
 				}	
