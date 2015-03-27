@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 	
 	private MainActivity act = this;
 	ArrayAdapter<String> itemsAdapter;
-	
+	ArrayList<String> listeUrl;
 
 	
 	@Override
@@ -92,7 +92,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 					repObj = repObj.getJSONObject("responseData");
 					JSONArray tmp = repObj.getJSONArray("results");
 	
-					ArrayList<String> listeUrl = new ArrayList<>();
+					listeUrl = new ArrayList<>();
 					
 					int nbr = Integer.parseInt(nbrRecherche.getSelectedItem().toString());
 					
@@ -117,11 +117,11 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		Toast.makeText(this, arg0.getItemAtPosition(arg2).toString(), Toast.LENGTH_LONG).show();
+	public void onItemClick(AdapterView<?> arg0, View view, int numListe, long arg3) {
+		Toast.makeText(this, arg0.getItemAtPosition(numListe).toString(), Toast.LENGTH_LONG).show();
 		
 		Intent intent = new Intent(this, ShowImageActivity.class);
-		intent.putExtra(Data.urlImage,arg0.getItemAtPosition(arg2).toString());
+		intent.putExtra(Data.urlImage,listeUrl.get(numListe));
 		startActivity(intent);
 		
 		
