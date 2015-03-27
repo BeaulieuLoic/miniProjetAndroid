@@ -1,6 +1,9 @@
 package com.example.mini_projet_android;
 
+import java.util.ArrayList;
+
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -14,20 +17,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 
-public class MainActivity extends Activity implements OnClickListener{
+public class MainActivity extends Activity implements OnClickListener, OnItemClickListener{
 	private Spinner nbrRecherche;
 	private Button rechercher;
 	private EditText zoneSaisie;
+	private ListView listeTexte;	
 	
 	private MainActivity act = this;
-
+	private String keyJson="url";
+	ArrayAdapter<String> itemsAdapter;
 	
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +52,9 @@ public class MainActivity extends Activity implements OnClickListener{
 		
 		nbrRecherche = (Spinner)findViewById(R.id.nbrRecherche);
 		
+		listeTexte = (ListView)findViewById(R.id.listeView);
+		listeTexte.setOnItemClickListener(this);
+		
 		
 		
 	}
@@ -50,6 +63,11 @@ public class MainActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View arg0) {
 		if(arg0.equals(rechercher)){
+			String saisie = zoneSaisie.getText().toString();
+			saisie.replace("\\s", "%");
+			String url = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="+saisie;
+			
+			lancerGet(url);
 
 		}		
 	}
@@ -67,20 +85,41 @@ public class MainActivity extends Activity implements OnClickListener{
 
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				String s = "";
 				String jsonData = new String(arg2);
 				
 				
 				try {
 					JSONObject repObj = (JSONObject) new JSONTokener(jsonData).nextValue();
-					Toast.makeText(act, repObj.getString("nom").toString(), Toast.LENGTH_LONG).show();
+					repObj = repObj.getJSONObject("responseData");
+					JSONArray tmp = repObj.getJSONArray("results");
+	
+					ArrayList<String> listeUrl = new ArrayList<>();
 					
+					int nbr = Integer.parseInt(nbrRecherche.getSelectedItem().toString());
+					
+					if(nbr > tmp.length()){
+						nbr = tmp.length();
+					}
+							
+					for (int i = 0; i < nbr; i++) {
+						repObj = (JSONObject) tmp.get(i);
+						listeUrl.add(repObj.getString("url"));
+					}
+
+					
+					itemsAdapter = new ArrayAdapter<String>(act, android.R.layout.simple_list_item_1, listeUrl);
+					listeTexte.setAdapter(itemsAdapter);
 				} catch (JSONException je) {
-					Log.e("TAG", "ERREUR:"+je.getMessage() );
-				}
-				
+					Log.e("TAG", "ERREUR:"+je.getMessage());
+				}	
 			}
-			
 		});
+	}
+
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+		
 	}
 }

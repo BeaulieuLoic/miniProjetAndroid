@@ -17,6 +17,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
+        public static final int listeView=0x7f070004;
         public static final int nbrRecherche=0x7f070000;
         public static final int rechercher=0x7f070003;
         public static final int zoneSaisie=0x7f070001;
