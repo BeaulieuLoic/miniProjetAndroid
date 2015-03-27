@@ -34,7 +34,6 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 	private ListView listeTexte;	
 	
 	private MainActivity act = this;
-	private String keyJson="url";
 	ArrayAdapter<String> itemsAdapter;
 	
 
@@ -119,7 +118,13 @@ public class MainActivity extends Activity implements OnClickListener, OnItemCli
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
+		Toast.makeText(this, arg0.getItemAtPosition(arg2).toString(), Toast.LENGTH_LONG).show();
+		
+		Intent intent = new Intent(this, ShowImageActivity.class);
+		intent.putExtra(Data.urlImage,arg0.getItemAtPosition(arg2).toString());
+		startActivity(intent);
+		
+		
 		
 	}
 }
