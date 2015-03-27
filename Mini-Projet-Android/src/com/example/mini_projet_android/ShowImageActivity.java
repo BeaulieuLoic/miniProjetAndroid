@@ -17,7 +17,9 @@ public class ShowImageActivity extends Activity{
 		
 		String imageUrl =  getIntent().getStringExtra(Data.urlImage);
 		image = (ImageView) findViewById(R.id.imageView1);
-		Picasso.with(this).load(imageUrl).into(image);
+		Picasso.with(this)
+			.load(imageUrl)
+		.into(image);
 		
 	}
 	
