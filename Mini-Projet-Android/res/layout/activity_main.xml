@@ -4,13 +4,7 @@
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}">
 
-	<Spinner
-	    android:id="@+id/nbrRecherche"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
-	    android:layout_below="@+id/zoneSaisie"
-	    android:entries="@array/nbrRechercheListe"/>
+
 
 	<TextView
 	    android:id="@+id/zoneTexte"
@@ -30,14 +24,29 @@
 	    android:layout_below="@+id/zoneSaisie"
 	    android:layout_marginTop="41dp"
 	    android:ems="10" />
+	
+	<LinearLayout 
+	    android:id="@+id/layout"
+	    android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/zoneSaisie">
+		<Button
+		    android:id="@+id/rechercher"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Rechercher"
+		    android:layout_weight="0.5"/>
+	
+		<Spinner
+		    android:id="@+id/nbrRecherche"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:entries="@array/nbrRechercheListe"
+		    android:layout_weight="0.5"/>
+	    
+	</LinearLayout>
 
-	<Button
-	    android:id="@+id/rechercher"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@+id/nbrRecherche"
-	    android:layout_centerHorizontal="true"
-	    android:text="Rechercher" />
+
 
 	<ListView
 	    android:id="@+id/listeView"
@@ -46,8 +55,7 @@
 	    android:layout_alignParentBottom="true"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentRight="true"
-	    android:layout_below="@+id/rechercher" >
+	    android:layout_below="@+id/layout" />
 
-	</ListView>
 
 </RelativeLayout>
